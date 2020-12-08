@@ -51,6 +51,7 @@ struct fuse_session {
 	struct fuse_lowlevel_ops op;
 	int got_init;
 	struct cuse_data *cuse_data;
+	struct muse_data *muse_data;
 	void *userdata;
 	uid_t owner;
 	struct fuse_conn_info conn;
@@ -118,6 +119,14 @@ int fuse_send_reply_iov_nofree(fuse_req_t req, int error, struct iovec *iov,
 void fuse_free_req(fuse_req_t req);
 
 void cuse_lowlevel_init(fuse_req_t req, fuse_ino_t nodeide, const void *inarg);
+
+void muse_lowlevel_init(fuse_req_t req, fuse_ino_t nodeide, const void *inarg);
+void do_muse_erase(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
+void do_muse_read(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
+void do_muse_write(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
+void do_muse_sync(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
+void do_muse_isbad(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
+void do_muse_markbad(fuse_req_t req, fuse_ino_t nodeid, const void *inarg);
 
 int fuse_start_thread(pthread_t *thread_id, void *(*func)(void *), void *arg);
 

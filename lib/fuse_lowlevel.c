@@ -2505,6 +2505,13 @@ static struct {
 	[FUSE_COPY_FILE_RANGE] = { do_copy_file_range, "COPY_FILE_RANGE" },
 	[FUSE_LSEEK]	   = { do_lseek,       "LSEEK"	     },
 	[CUSE_INIT]	   = { cuse_lowlevel_init, "CUSE_INIT"   },
+	[MUSE_INIT]	   = { muse_lowlevel_init, "MUSE_INIT"   },
+	[MUSE_ERASE]	   = { do_muse_erase,  "MUSE_ERASE"  },
+	[MUSE_READ]	   = { do_muse_read,  "MUSE_READ"  },
+	[MUSE_WRITE]	   = { do_muse_write,  "MUSE_WRITE"  },
+	[MUSE_SYNC]	   = { do_muse_sync,  "MUSE_SYNC"  },
+	[MUSE_ISBAD]	   = { do_muse_isbad,  "MUSE_ISBAD"  },
+	[MUSE_MARKBAD]	   = { do_muse_markbad,  "MUSE_MARKBAD"  },
 };
 
 #define FUSE_MAXOP (sizeof(fuse_ll_ops) / sizeof(fuse_ll_ops[0]))
@@ -2605,10 +2612,16 @@ void fuse_session_process_buf_int(struct fuse_session *se,
 	if (!se->got_init) {
 		enum fuse_opcode expected;
 
-		expected = se->cuse_data ? CUSE_INIT : FUSE_INIT;
+		if (se->cuse_data)
+			expected = CUSE_INIT;
+		else if (se->muse_data)
+			expected = MUSE_INIT;
+		else
+			expected = FUSE_INIT;
+
 		if (in->opcode != expected)
 			goto reply_err;
-	} else if (in->opcode == FUSE_INIT || in->opcode == CUSE_INIT)
+	} else if (in->opcode == FUSE_INIT || in->opcode == CUSE_INIT || in->opcode == MUSE_INIT)
 		goto reply_err;
 
 	err = EACCES;

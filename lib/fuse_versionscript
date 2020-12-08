@@ -168,6 +168,14 @@ FUSE_3.7 {
 		fuse_log;
 } FUSE_3.4;
 
+FUSE_3.8 {
+	global:
+		muse_lowlevel_main;
+		muse_send_read_reply;
+		muse_send_write_reply;
+		muse_send_block_markbad_reply;
+} FUSE_3.7;
+
 # Local Variables:
 # indent-tabs-mode: t
 # End:

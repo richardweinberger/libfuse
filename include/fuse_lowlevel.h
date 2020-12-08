@@ -1245,6 +1245,15 @@ struct fuse_lowlevel_ops {
 	 */
 	void (*lseek) (fuse_req_t req, fuse_ino_t ino, off_t off, int whence,
 		       struct fuse_file_info *fi);
+
+	void (*muse_erase) (fuse_req_t req, uint64_t addr, uint64_t len);
+	void (*muse_read) (fuse_req_t req, uint64_t addr, uint64_t len,
+			   uint32_t flags);
+	void (*muse_write) (fuse_req_t req, uint64_t addr, uint64_t len,
+			   uint32_t flags, const char *buf);
+	void (*muse_sync) (fuse_req_t req);
+	void (*muse_block_isbad) (fuse_req_t req, uint64_t addr);
+	void (*muse_block_markbad) (fuse_req_t req, uint64_t addr);
 };
 
 /**
