@@ -1,7 +1,7 @@
 examples = [ 'passthrough', 'passthrough_fh',
              'hello', 'hello_ll', 'printcap',
              'ioctl_client', 'poll_client', 'ioctl',
-             'cuse', 'cuse_client' ]
+             'cuse', 'cuse_client', 'mtdsim', 'mtdram' ]
 
 if not platform.endswith('bsd') and platform != 'dragonfly'
     examples += 'passthrough_ll'
